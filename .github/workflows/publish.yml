@@ -5,7 +5,7 @@ name: Package publish
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
