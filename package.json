@@ -4,7 +4,7 @@
   "description": "A changeset add wrapper that prompts for structured business context",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "bin": {
     "changeset-add": "./dist/index.js"
