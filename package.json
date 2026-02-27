@@ -1,0 +1,36 @@
+{
+  "name": "cstm-changeset",
+  "version": "1.0.0",
+  "description": "A changeset add wrapper that prompts for structured business context",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "changeset-add": "./dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@changesets/cli": ">=2"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "changesets",
+    "changelog",
+    "cli"
+  ],
+  "license": "MIT"
+}
