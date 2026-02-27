@@ -7,16 +7,14 @@
     "node": ">=24"
   },
   "bin": {
-    "changeset-add": "./dist/index.js"
+    "cstm-changeset": "./dist/index.js"
   },
   "files": [
     "dist/",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx src/index.ts",
-    "prepublishOnly": "npm run build"
+    "build": "tsc"
   },
   "peerDependencies": {
     "@changesets/cli": ">=2"
