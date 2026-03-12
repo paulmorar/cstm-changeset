@@ -132,7 +132,13 @@ async function main(): Promise<void> {
   console.log(`\n✅  Changeset annotated: ${newFiles[0]}\n`);
 }
 
-main().catch((err: unknown) => {
-  console.error(err);
-  process.exit(1);
-});
+// ─── Entry point ──────────────────────────────────────────────────────────────
+
+const isMain = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMain) {
+  main().catch((err: unknown) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
