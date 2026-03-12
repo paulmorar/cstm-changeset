@@ -23,9 +23,7 @@ export function getChangesetDir(): string {
 
 export function getChangesetFiles(dir: string): string[] {
   try {
-    return readdirSync(dir).filter(
-      (f) => f.endsWith(".md") && f !== "README.md",
-    );
+    return readdirSync(dir).filter((f) => f.endsWith(".md") && f !== "README.md");
   } catch {
     console.error(
       `\n❌  Could not find a .changeset directory at:\n   ${dir}\n\n` +
@@ -41,10 +39,7 @@ function ask(rl: Interface, question: string): Promise<string> {
   return new Promise((res) => rl.question(question, res));
 }
 
-export async function askYesNo(
-  rl: Interface,
-  question: string,
-): Promise<boolean> {
+export async function askYesNo(rl: Interface, question: string): Promise<boolean> {
   while (true) {
     const answer = (await ask(rl, `${question} (y/n): `)).trim().toLowerCase();
     if (answer === "y" || answer === "yes") return true;
@@ -53,10 +48,7 @@ export async function askYesNo(
   }
 }
 
-export async function askFreeText(
-  rl: Interface,
-  question: string,
-): Promise<string> {
+export async function askFreeText(rl: Interface, question: string): Promise<string> {
   const answer = (await ask(rl, `${question}\n> `)).trim();
   return answer || "No details provided.";
 }
@@ -111,26 +103,17 @@ async function main(): Promise<void> {
   );
 
   console.log();
-  const hasClientImpact = await askYesNo(
-    rl,
-    "2. Does this carry client impact?",
-  );
+  const hasClientImpact = await askYesNo(rl, "2. Does this carry client impact?");
   let clientImpactDetail = "";
   if (hasClientImpact) {
-    clientImpactDetail = await askFreeText(
-      rl,
-      "   Please describe the client impact:",
-    );
+    clientImpactDetail = await askFreeText(rl, "   Please describe the client impact:");
   }
 
   console.log();
   const isTested = await askYesNo(rl, "3. Has this been tested?");
   let testingDetail = "";
   if (isTested) {
-    testingDetail = await askFreeText(
-      rl,
-      "   Briefly describe how it was tested:",
-    );
+    testingDetail = await askFreeText(rl, "   Briefly describe how it was tested:");
   }
 
   rl.close();

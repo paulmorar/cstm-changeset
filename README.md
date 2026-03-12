@@ -3,11 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/cstm-changeset.svg)](https://www.npmjs.com/package/cstm-changeset)
 [![license](https://img.shields.io/npm/l/cstm-changeset.svg)](./LICENSE.md)
 
-A CLI wrapper around `changeset add` that prompts for structured business context — because changelogs should tell the *why*, not just the *what*.
+A CLI wrapper around `changeset add` that prompts for structured business context — because changelogs should tell the _why_, not just the _what_.
 
 ## Why?
 
-[Changesets](https://github.com/changesets/changesets) is a fantastic tool for managing versioning and changelogs. But out of the box, it only captures *what* changed. When a teammate (or future you) looks back at the changelog, questions like these often go unanswered:
+[Changesets](https://github.com/changesets/changesets) is a fantastic tool for managing versioning and changelogs. But out of the box, it only captures _what_ changed. When a teammate (or future you) looks back at the changelog, questions like these often go unanswered:
 
 - What business value did this change bring?
 - Did this affect clients? How?
