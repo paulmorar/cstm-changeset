@@ -3,6 +3,15 @@
   "version": "1.0.1",
   "description": "A changeset add wrapper that prompts for structured business context",
   "type": "module",
+  "author": "Paul Morar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulmorar/cstm-changeset.git"
+  },
+  "homepage": "https://github.com/paulmorar/cstm-changeset#readme",
+  "bugs": {
+    "url": "https://github.com/paulmorar/cstm-changeset/issues"
+  },
   "engines": {
     "node": ">=24"
   },
@@ -14,7 +23,9 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "@changesets/cli": ">=2"
@@ -28,7 +39,9 @@
   "keywords": [
     "changesets",
     "changelog",
-    "cli"
+    "cli",
+    "versioning",
+    "release"
   ],
   "license": "MIT"
 }

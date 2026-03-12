@@ -39,12 +39,7 @@ The CLI will:
 
 ## Example
 
-Here's what the interactive prompt looks like:
-
-<!-- TODO: Add screenshot -->
-![Example prompt](./docs/example.png)
-
-And here's what gets appended to your changeset:
+Here's what gets appended to your changeset:
 
 ```markdown
 ## Business Context
