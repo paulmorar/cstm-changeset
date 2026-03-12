@@ -16,18 +16,32 @@ const VERSION = pkg.version;
 const HELP_TEXT = `
 cstm-changeset v${VERSION}
 
-A changeset add wrapper that prompts for structured business context.
+A wrapper around changesets CLI that adds business context prompts to 'add'.
 
 Usage:
-  npx cstm-changeset [options]
+  npx cstm-changeset [command] [options]
+
+Commands:
+  add            Create a changeset with business context prompts (default)
+  status         Show changeset status
+  version        Apply changesets and update versions  
+  publish        Publish packages to npm
+  init           Initialize changesets in your project
+  pre <mode>     Enter/exit prerelease mode
+  tag            Create git tags for published packages
 
 Options:
   -h, --help     Show this help message
   -v, --version  Show version number
 
+All other arguments are passed through to the underlying changeset command.
+
 Examples:
-  npx cstm-changeset          Run changeset add with business context prompts
-  npx cstm-changeset --help   Show help
+  npx cstm-changeset              Run 'add' with business context prompts
+  npx cstm-changeset add          Same as above
+  npx cstm-changeset status       Check changeset status
+  npx cstm-changeset version      Apply changesets
+  npx cstm-changeset --help       Show this help
 `;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -133,24 +147,39 @@ export function buildAnnotation(ctx: BusinessContext): string {
 
 // ─── CLI ──────────────────────────────────────────────────────────────────────
 
-function parseArgs(args: string[]): { help: boolean; version: boolean } {
-  return {
-    help: args.includes("-h") || args.includes("--help"),
-    version: args.includes("-v") || args.includes("--version"),
-  };
+interface ParsedArgs {
+  help: boolean;
+  version: boolean;
+  command: string | null;
+  rest: string[];
 }
 
-function runChangesetAdd(): number {
-  const result = spawnSync("npx", ["changeset", "add"], {
+function parseArgs(args: string[]): ParsedArgs {
+  const help = args.includes("-h") || args.includes("--help");
+  const version = args.includes("-v") || args.includes("--version");
+
+  // Filter out flags for command detection
+  const nonFlags = args.filter((a) => !a.startsWith("-"));
+  const command = nonFlags[0] || null;
+  const rest = args.slice(command ? args.indexOf(command) + 1 : 0);
+
+  return { help, version, command, rest };
+}
+
+function runChangesetCommand(command: string, args: string[] = []): number {
+  const result = spawnSync("npx", ["changeset", command, ...args], {
     stdio: "inherit",
-    shell: true,
   });
 
   if (result.error) {
-    throw new ChangesetError(`Failed to run changeset add: ${result.error.message}`);
+    throw new ChangesetError(`Failed to run changeset ${command}: ${result.error.message}`);
   }
 
   return result.status ?? 1;
+}
+
+function runChangesetAdd(): number {
+  return runChangesetCommand("add");
 }
 
 async function collectBusinessContext(rl: Interface): Promise<BusinessContext> {
@@ -186,19 +215,7 @@ async function collectBusinessContext(rl: Interface): Promise<BusinessContext> {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-async function main(): Promise<void> {
-  const { help, version } = parseArgs(process.argv.slice(2));
-
-  if (version) {
-    console.log(VERSION);
-    return;
-  }
-
-  if (help) {
-    console.log(HELP_TEXT);
-    return;
-  }
-
+async function runAddWithContext(): Promise<void> {
   const changesetDir = getChangesetDir();
   const before = new Set(getChangesetFiles(changesetDir));
 
@@ -240,6 +257,32 @@ async function main(): Promise<void> {
     console.log(`\n✅  Changeset annotated: ${newFiles[0]}\n`);
   } finally {
     rl.close();
+  }
+}
+
+async function main(): Promise<void> {
+  const { help, version, command, rest } = parseArgs(process.argv.slice(2));
+
+  if (version) {
+    console.log(VERSION);
+    return;
+  }
+
+  if (help) {
+    console.log(HELP_TEXT);
+    return;
+  }
+
+  // No command or 'add' command: run with business context
+  if (!command || command === "add") {
+    await runAddWithContext();
+    return;
+  }
+
+  // Pass through to changeset CLI for other commands
+  const exitCode = runChangesetCommand(command, rest);
+  if (exitCode !== 0) {
+    process.exit(exitCode);
   }
 }
 
