@@ -1,10 +1,18 @@
 import { describe, it, expect } from "vitest";
-import { buildAnnotation, getChangesetDir } from "./index.js";
+import { buildAnnotation, getChangesetDir, getChangesetFiles } from "./index.js";
 
 describe("getChangesetDir", () => {
   it("returns path to .changeset directory", () => {
     const result = getChangesetDir();
     expect(result).toMatch(/\.changeset$/);
+  });
+});
+
+describe("getChangesetFiles", () => {
+  it("throws error for missing directory", () => {
+    expect(() => getChangesetFiles("/nonexistent/path/.changeset")).toThrow(
+      /Could not find a .changeset directory/,
+    );
   });
 });
 
