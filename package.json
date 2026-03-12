@@ -1,6 +1,6 @@
 {
   "name": "cstm-changeset",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A changeset add wrapper that prompts for structured business context",
   "type": "module",
   "author": "Paul Morar",
