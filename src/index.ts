@@ -2,9 +2,9 @@
 
 import { spawnSync } from "node:child_process";
 import { createInterface, Interface } from "node:readline";
-import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, existsSync, realpathSync } from "node:fs";
 import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -245,7 +245,8 @@ async function main(): Promise<void> {
 
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const entryPath = realpathSync(resolve(process.argv[1]));
+const isMain = import.meta.url === pathToFileURL(entryPath).href;
 
 if (isMain) {
   main().catch((err: unknown) => {
