@@ -31,7 +31,7 @@
     "test:watch": "vitest",
     "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {
+  "dependencies": {
     "@changesets/cli": ">=2"
   },
   "devDependencies": {
